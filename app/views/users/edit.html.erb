@@ -1,0 +1,7 @@
+<h1>Editar Usuário</h1>
+
+<%= render 'form', user: @user %>
+
+<%= link_to 'Mostrar', @user %> |
+<%= link_to "Apagar", @user, method: :delete%> |
+<%= link_to 'Voltar', users_path %>

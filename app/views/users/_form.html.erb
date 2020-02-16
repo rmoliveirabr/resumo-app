@@ -1,0 +1,47 @@
+<%= form_with(model: user, local: true) do |form| %>
+  <% if user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(user.errors.count, "error") %> evitou que este usuário fosse gravado:</h2>
+
+      <ul>
+        <% user.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    Nome:
+    <%= form.text_field :full_name %>
+  </div>
+
+  <div class="field">
+    E-mail:
+    <%= form.text_field :email %>
+  </div>
+
+  <div class="field">
+    Senha:
+    <%= form.password_field  :password %>
+  </div>
+
+  <div class="field">
+    Confirmação da senha:
+    <%= form.password_field  :password_confirmation %>
+  </div>
+
+  <div class="field">
+    Sexo:
+    <%= form.select :gender, ["Masculino", "Feminino", "Outros"] %>
+  </div>
+
+  <div class="field">
+    Data de nascimento:
+    <%= form.date_select :birth_date, order: [:day, :month, :year], start_year: 1920 %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Gravar" %>
+  </div>
+<% end %>

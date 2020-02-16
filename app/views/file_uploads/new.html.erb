@@ -1,0 +1,22 @@
+<h1>Upload for <%= @post.title %></h1>
+
+<h4 class="progress" style="display: none">Progress: <span class="progress_count"></span>%</h4>
+
+<b>Upload image</b><p/>
+<%= form_with model: @post, url: post_file_uploads_path(@post),
+              method: :post, id: "upload_file", local: true do |f| %>
+  <%= f.file_field :files, multiple: true, direct_upload: true, accept: 'image/png,image/gif,image/jpeg' %><br /><br />
+  <%= f.submit 'Upload' %>
+<% end %>
+
+<br/><br/>
+
+<b>Upload document</b><p/>
+<%= form_with model: @post, url: post_file_uploads_path(@post),
+              method: :post, id: "upload_file", local: true do |f| %>
+  <%= f.file_field :files, multiple: true, direct_upload: true, accept: 'application/pdf,
+    application/zip,application/vnd.openxmlformats-officedocument.wordprocessingml.document' %><br /><br />
+  <%= f.submit 'Upload' %>
+<% end %>
+
+<p/>

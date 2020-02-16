@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>
+    Perfil de <%= @user.full_name %>
+  </strong>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @user.email %>
+</p>
+
+<p>
+  <strong>Sexo:</strong>
+  <%= @user.gender %>
+</p>
+
+<p>
+  <strong>Data de nascimento:</strong>
+  <%= @user.birth_date.strftime("%d/%m/%Y") %>
+</p>
+
+<% if current_user == @user %>
+  <%= link_to 'Editar', edit_user_path(@user) %> |
+  <%= link_to "Apagar", @user, method: :delete%> |
+<%end%>
+
+<%= link_to 'Voltar', posts_path %>

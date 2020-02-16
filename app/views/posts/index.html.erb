@@ -1,0 +1,58 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Lista de Resumos</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Título</th>
+      <th>Descrição</th>
+      <th>Autor</th>
+      <th>Categorias</th>
+      <th>Tags</th>
+      <th>Anexos</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @posts.each do |post| %>
+      <tr>
+        <td><%= post.title %></td>
+        <td><%= post.description %></td>
+        <td>
+          <%= User.find(post.user_id).full_name %>
+        </td>
+        <td>
+          <% post.categories.each do |cat| %>
+            <%= cat.title %>
+            <br/>
+          <% end %>
+        </td>        <td>
+          <% post.tags.each do |tag| %>
+            <%= tag.tag_text %>
+            <br/>
+          <% end %>
+        </td>
+        <td>
+          <ul>
+           <% post.files.each do |file| %>
+              <li>
+                <%= link_to file.filename, url_for(file), target: :_blank %>
+              </li>
+           <% end %>
+          </ul>
+        </td>
+        <td><%= link_to 'Exibir', post %></td>
+        <% if current_user.present? && post.user_id == current_user.id %>
+          <td><%= link_to 'Editar', edit_post_path(post) %></td>
+          <td><%= link_to 'Apagar', post, method: :delete, data: { confirm: 'Confirma?' } %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'Novo Resumo', new_post_path %>

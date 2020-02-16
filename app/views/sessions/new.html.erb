@@ -1,0 +1,20 @@
+<h1>Sistema de Resumos</h1>
+<br/><br/>
+<%= form_for :session, url: sign_in_path do |f| %>
+  <div class="field">
+    E-mail:
+    <%= f.email_field :email, autofocus: true %>
+  </div>
+
+  <div class="field">
+    Senha:
+    <%= f.password_field :password, autocomplete: "off" %>
+  </div>
+
+  <br/><br/>
+
+  <div class="actions">
+    <%= f.submit "Log in" %>
+  </div>
+<p>Usuário novo? <%= link_to "Criar usuário", new_user_path %></p>
+<% end %>

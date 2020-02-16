@@ -1,0 +1,84 @@
+<%= form_with(model: post, local: true) do |form| %>
+  <% if post.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(post.errors.count, "error") %> impediram a gravação deste resumo:</h2>
+
+      <ul>
+        <% post.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    Título: <%= form.text_field :title %>
+  </div>
+
+  <div class="field">
+    Descrição: <%= form.text_area :description %>
+  </div>
+
+  <div class="field">
+    Publicar? <%= form.check_box :published %>
+  </div>
+
+  <div class="field">
+    Favorito? <%= form.check_box :favorite %>
+  </div>
+
+  <!-- List tags -->
+  <% if @post.id %>
+    <p>
+     Tags:
+     <% if @post.tags.empty? %>
+        Nenhuma tag
+     <% end %>
+
+     <% @post.tags.each do |tag| %>
+       <%= tag.tag_text %>
+     <% end %>
+    </p>
+  <% end %>
+
+  <!-- List categories -->
+  <div class="field">
+   Categories:<br/>
+   <%= select_tag("cat_list[]", options_for_select(@categories.collect { |cat| [cat.title, cat.id] }, @post.categories.collect { |cat| cat.id}), {:multiple=>true, :size=>6})%>
+  </div>
+
+  <!-- List files -->
+  <% if @post.id %>
+    Anexos:
+    <% if @post.files.empty? %>
+       Nenhum anexo
+    <% end %>
+
+    <ul>
+     <% @post.files.each do |file| %>
+        <li>
+          <%= link_to file.filename, url_for(file), target: :_blank%>
+        </li>
+     <% end %>
+    </ul>
+  <% end %>
+
+  <!-- Rating -->
+  <% if @post.id %>
+    <br/><br/>
+    <b>Rating:</b>
+    <%= link_to '', rate_page_url(id: @post.id, rate_id: 0), :class => "glyphicon glyphicon-remove-circle link_no_underline" %>
+    <% @post.rating.to_i.times do |i|  %>
+     <%= link_to '', rate_page_url(id: @post.id, rate_id: i+1), :class => "glyphicon glyphicon-star link_no_underline" %>
+    <% end %>
+    <% @post.blank_stars.times do |i| %>
+     <%= link_to '', rate_page_url(id: @post.id, rate_id: @post.rating+i+1), :class => "glyphicon glyphicon-star-empty link_no_underline" %>
+    <% end %>
+  <% end %>
+
+  <p/>
+
+  <div class="actions">
+    <%= form.submit "Gravar resumo" %>
+  </div>
+<% end %>

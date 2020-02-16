@@ -1,0 +1,94 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Título:</strong>
+  <%= @post.title %>
+</p>
+
+<p>
+  <strong>Descrição:</strong>
+  <%= @post.description %>
+</p>
+
+<p>
+  <strong>Publicar?</strong>
+  <%= @post.published %>
+</p>
+
+<p>
+  <strong>Favorito?</strong>
+  <%= @post.favorite %>
+</p>
+
+<!-- List tags -->
+<p>
+     <b>Tags:</b>
+     <div class="tag_list">
+       <% @post.tags.each do |tag| %>
+        <div>
+           <%= tag.tag_text %>
+           <% if current_user.present? && @post.user_id == current_user.id %>
+              <%= link_to "(x)", destroy_post_tag_path_url(@post, tag),
+                remote: true, class: "tags_target",
+                method: "delete" %>
+           <% end %>
+        </div>
+       <% end %>
+     </div>
+</p>
+
+<!-- Add new tag -->
+<%= form_tag "/posts/#{@post.id}/tags/new", {remote: true, :method => :get, :class => "form-inline"} do  %>
+  <div id= "search-data" class="form-search search-data" data-skills="<%= @tags.to_json %>">
+    <b>Nova Tag:</b>
+    <%= text_field_tag :tag_text, nil, autocomplete: :on, class: "form-control search-input", placeholder: "Buscars tag..." %>
+  </div>
+
+  <div class="actions">
+    <%= submit_tag 'Adicionar Tag'  %>
+  </div>
+<% end %>
+
+<p/>
+
+<!-- View categories -->
+<p>
+  <b>Categorias:</b>
+  <%= @post.categories.map(&:title).join(', ') %>
+</p>
+
+<!-- Attached files -->
+<b>Arquivos:</b>
+<ul>
+  <% @post.files.each do |file| %>
+    <li>
+      <%= link_to file.filename, url_for(file), target: :_blank %>
+      <% if @can_edit %>
+        <%= link_to "(x)", post_file_upload_path(@post, file), method: :delete %>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
+
+<% if @can_edit %>
+ <%= button_to 'Inserir Anexos', new_post_file_upload_path(@post) %>
+<% end %>
+
+<br/><br/>
+
+<!-- Rating -->
+<b>Rating:</b>
+<% @post.rating.to_i.times do  %>
+ <span class="glyphicon glyphicon-star"></span>
+<% end %>
+<% @post.blank_stars.times do %>
+ <span class="glyphicon glyphicon-star-empty"></span>
+<% end %>
+
+<br/><br/>
+
+<!-- Post actions -->
+<% if @can_edit %>
+  <%= link_to 'Editar', edit_post_path(@post) %> |
+<% end %>
+<%= link_to 'Voltar', posts_path %>

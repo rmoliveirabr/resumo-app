@@ -1,0 +1,13 @@
+var added = <%= @add_tag %>;
+var post_id = <%= @post ? (@post.id) : (0) %>;
+var tag_id = <%= @tag ? (@tag.id) : (0) %>;
+
+if (added) {
+  var tag = '<div>' + $("#tag_text").val();
+  tag += ' <a update="tags_target" class="tags_target" data-remote="true" rel="nofollow" ';
+  tag += 'data-method="delete" href="/posts/'+post_id+'/tags/'+tag_id+'">(x)</a></div>';
+
+  $('.tag_list').append(tag);
+}
+
+$('#tag_text').val("");
