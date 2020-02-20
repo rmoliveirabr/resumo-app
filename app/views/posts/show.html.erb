@@ -1,13 +1,18 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Título:</strong>
-  <%= @post.title %>
+  <strong>Ano:</strong>
+  <%= @post.year.year_text %>
 </p>
 
 <p>
-  <strong>Descrição:</strong>
-  <%= @post.description %>
+  <strong>Matéria:</strong>
+  <%= @post.subject.subject_text %>
+</p>
+
+<p>
+  <strong>Assunto:</strong>
+  <%= @post.topic.topic_text %>
 </p>
 
 <p>
@@ -50,12 +55,6 @@
 <% end %>
 
 <p/>
-
-<!-- View categories -->
-<p>
-  <b>Categorias:</b>
-  <%= @post.categories.map(&:title).join(', ') %>
-</p>
 
 <!-- Attached files -->
 <b>Arquivos:</b>

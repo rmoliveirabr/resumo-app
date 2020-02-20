@@ -12,11 +12,17 @@
   <% end %>
 
   <div class="field">
-    Título: <%= form.text_field :title %>
+    Ano: <%= select_tag 'year', options_for_select(@years.map { |y| [y.year_text, y.id] }, @post.year_id) %>
+    <%= text_field_tag 'new_year', 'Novo ano...' %>
+    <%= button_to '', 'Add' %>
   </div>
 
   <div class="field">
-    Descrição: <%= form.text_area :description %>
+    Matéria: <%= select_tag 'subject', options_for_select(@subjects.map { |s| [s.subject_text, s.id] }, @post.subject_id) %>
+  </div>
+
+  <div class="field">
+    Assunto: <%= select_tag 'topic', options_for_select(@topics.map { |t| [t.topic_text, t.id] }, @post.topic_id) %>
   </div>
 
   <div class="field">
@@ -40,12 +46,6 @@
      <% end %>
     </p>
   <% end %>
-
-  <!-- List categories -->
-  <div class="field">
-   Categories:<br/>
-   <%= select_tag("cat_list[]", options_for_select(@categories.collect { |cat| [cat.title, cat.id] }, @post.categories.collect { |cat| cat.id}), {:multiple=>true, :size=>6})%>
-  </div>
 
   <!-- List files -->
   <% if @post.id %>

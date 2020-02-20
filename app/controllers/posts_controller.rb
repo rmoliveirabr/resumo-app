@@ -10,14 +10,18 @@ class PostsController < ApplicationController
     if params[:search].present? # search posts
       @parameter = params[:search].downcase
       if @parameter.size >= 3
-        @posts = Post.all.where("lower(title) LIKE :search", search: "%#{@parameter}%")
+        #@posts = Post.all.where("lower(year) LIKE :search", search: "%#{@parameter}%")
+        @posts = Post.joins(:year).where("lower(years.year_text) LIKE :search", search: "%#{@parameter}%")
       else
-        @posts = Post.all.order(:title)
+        #@posts = Post.all.order(:year)
+        @posts = Post.joins(:year).order('years.year_text')
       end
     elsif params[:format].present? # filter by user
-      @posts = Post.where(user_id: current_user.id).order(:title)
+      #@posts = Post.where(user_id: current_user.id).order(:year)
+      @posts = Post.joins(:year).where(user_id: current_user.id).order(:year)
     else # show all posts
-      @posts = Post.all.order(:title)
+      #@posts = Post.joins('LEFT OUTER JOIN years ON posts.year_id = years.id').order('years.year_text')
+      @posts = Post.joins(:year).order('years.year_text')
     end
   end
 
@@ -25,9 +29,11 @@ class PostsController < ApplicationController
   def search
     if !params[:search].blank?
       @parameter = params[:search].downcase
-      @posts = Post.all.where("lower(title) LIKE :search", search: "%#{@parameter}%")
+      #@posts = Post.all.where("lower(year) LIKE :search", search: "%#{@parameter}%")
+      @posts = Post.joins(:year).where("lower(years.year_text) LIKE :search", search: "%#{@parameter}%")
     else
-      @posts = Post.all
+      #@posts = Post.all
+      @posts = Post.joins(:year).order('years.year_text')
     end
 
     redirect_to posts_url
@@ -65,12 +71,13 @@ class PostsController < ApplicationController
   # GET /posts/new
   def new
     @post = Post.new
-    @categories = Category.all
   end
 
   # GET /posts/1/edit
   def edit
-    @categories = Category.all
+      @years = Year.all
+      @subjects = Subject.all
+      @topics = Topic.all
   end
 
   # POST /posts
@@ -94,16 +101,6 @@ class PostsController < ApplicationController
   # PATCH/PUT /posts/1.json
   def update
     respond_to do |format|
-      @post.categories.clear
-      if params[:cat_list]
-        params[:cat_list].each do |cat_id|
-          unless cat_id.empty?
-            cat = Category.find(cat_id)
-            @post.categories << cat
-          end
-        end
-      end
-
       if @post.update(post_params)
         format.html { redirect_to posts_url, notice: 'Resumo atualizado com sucesso.' }
         format.json { render :show, status: :ok, location: @post }
@@ -132,6 +129,6 @@ class PostsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
-      params.require(:post).permit(:title, :description, :published, :favorite, :user_id)
+      params.require(:post).permit(:year, :subject, :topic, :published, :favorite, :user_id)
     end
 end

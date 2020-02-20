@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_10_234741) do
+ActiveRecord::Schema.define(version: 2020_02_21_004430) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,30 +43,7 @@ ActiveRecord::Schema.define(version: 2020_02_10_234741) do
     t.index ["att_type"], name: "index_attachment_types_on_att_type", unique: true
   end
 
-  create_table "categories", force: :cascade do |t|
-    t.string "title"
-    t.text "description"
-    t.bigint "category_type_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["category_type_id"], name: "index_categories_on_category_type_id"
-  end
-
-  create_table "categories_posts", id: false, force: :cascade do |t|
-    t.bigint "post_id", null: false
-    t.bigint "category_id", null: false
-  end
-
-  create_table "category_types", force: :cascade do |t|
-    t.string "cat_type"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["cat_type"], name: "index_category_types_on_cat_type", unique: true
-  end
-
   create_table "posts", force: :cascade do |t|
-    t.string "title"
-    t.text "description"
     t.boolean "published"
     t.boolean "favorite"
     t.bigint "user_id", null: false
@@ -74,7 +51,13 @@ ActiveRecord::Schema.define(version: 2020_02_10_234741) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "views"
     t.integer "rating"
+    t.bigint "year_id"
+    t.bigint "subject_id"
+    t.bigint "topic_id"
+    t.index ["subject_id"], name: "index_posts_on_subject_id"
+    t.index ["topic_id"], name: "index_posts_on_topic_id"
     t.index ["user_id"], name: "index_posts_on_user_id"
+    t.index ["year_id"], name: "index_posts_on_year_id"
   end
 
   create_table "posts_tags", id: false, force: :cascade do |t|
@@ -82,11 +65,25 @@ ActiveRecord::Schema.define(version: 2020_02_10_234741) do
     t.bigint "tag_id", null: false
   end
 
+  create_table "subjects", force: :cascade do |t|
+    t.string "subject_text"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["subject_text"], name: "index_subjects_on_subject_text", unique: true
+  end
+
   create_table "tags", force: :cascade do |t|
     t.string "tag_text"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["tag_text"], name: "index_tags_on_tag", unique: true
+  end
+
+  create_table "topics", force: :cascade do |t|
+    t.string "topic_text"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["topic_text"], name: "index_topics_on_topic_text", unique: true
   end
 
   create_table "users", force: :cascade do |t|
@@ -99,7 +96,16 @@ ActiveRecord::Schema.define(version: 2020_02_10_234741) do
     t.string "password_digest"
   end
 
+  create_table "years", force: :cascade do |t|
+    t.string "year_text"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["year_text"], name: "index_years_on_year_text", unique: true
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "categories", "category_types"
+  add_foreign_key "posts", "subjects"
+  add_foreign_key "posts", "topics"
   add_foreign_key "posts", "users"
+  add_foreign_key "posts", "years"
 end
