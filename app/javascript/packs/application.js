@@ -6,9 +6,12 @@
 require("@rails/ujs").start()
 require("turbolinks").start()
 require("@rails/activestorage").start()
+
+//require("js-autocomplete")
 require("jquery")
+require("auto-complete-custom")
+
 require("channels")
-require("autocomplete")
 require("progresso")
 
 // Uncomment to copy all static images under ../images to the output folder and reference

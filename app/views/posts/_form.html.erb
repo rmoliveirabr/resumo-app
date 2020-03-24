@@ -12,17 +12,30 @@
   <% end %>
 
   <div class="field">
-    Ano: <%= select_tag 'year', options_for_select(@years.map { |y| [y.year_text, y.id] }, @post.year_id) %>
-    <%= text_field_tag 'new_year', 'Novo ano...' %>
-    <%= button_to '', 'Add' %>
+    <div id= "search-data-year" name="search-data-year" class="form-search search-data autocomplete"
+      style="border-top: 1px solid #eee;border-bottom:1px solid #eee;background:#fafafa;margin:30px 0;padding:20px 10px;text-align:center"
+      data-skills="<%= @years.to_json %>">
+      Ano: <%= text_field_tag :year_text, @post.year.year_text,
+            autocomplete: :off, class: "form-control search-input", sytle: "width:100%;max-width:600px;outline:0"%>
+    </div>
   </div>
 
   <div class="field">
-    Matéria: <%= select_tag 'subject', options_for_select(@subjects.map { |s| [s.subject_text, s.id] }, @post.subject_id) %>
+    <div id= "search-data-subject" name="search-data-subject" class="form-search search-data autocomplete"
+      style="border-top: 1px solid #eee;border-bottom:1px solid #eee;background:#fafafa;margin:30px 0;padding:20px 10px;text-align:center"
+      data-skills="<%= @subjects.to_json %>">
+      Matéria: <%= text_field_tag :subject_text, @post.subject.subject_text,
+            autocomplete: :off, class: "form-control search-input", sytle: "width:100%;max-width:600px;outline:0"%>
+    </div>
   </div>
 
   <div class="field">
-    Assunto: <%= select_tag 'topic', options_for_select(@topics.map { |t| [t.topic_text, t.id] }, @post.topic_id) %>
+    <div id= "search-data-topic" name="search-data-topic" class="form-search search-data autocomplete"
+      style="border-top: 1px solid #eee;border-bottom:1px solid #eee;background:#fafafa;margin:30px 0;padding:20px 10px;text-align:center"
+      data-skills="<%= @topics.to_json %>">
+      Assunto: <%= text_field_tag :topic_text, @post.topic.topic_text,
+            autocomplete: :off, class: "form-control search-input", sytle: "width:100%;max-width:600px;outline:0"%>
+    </div>
   </div>
 
   <div class="field">
@@ -65,8 +78,7 @@
 
   <!-- Rating -->
   <% if @post.id %>
-    <br/><br/>
-    <b>Rating:</b>
+    Rating:
     <%= link_to '', rate_page_url(id: @post.id, rate_id: 0), :class => "glyphicon glyphicon-remove-circle link_no_underline" %>
     <% @post.rating.to_i.times do |i|  %>
      <%= link_to '', rate_page_url(id: @post.id, rate_id: i+1), :class => "glyphicon glyphicon-star link_no_underline" %>

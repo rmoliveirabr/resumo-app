@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
   resources :posts do
     resources :tags#, only: [:destroy]
-      resources :file_uploads, only: [:new, :create, :destroy]
+    resources :file_uploads, only: [:new, :create, :destroy]
   end
 
   resources :users

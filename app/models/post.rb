@@ -11,6 +11,10 @@ class Post < ApplicationRecord
 
   has_many_attached :files
 
+  def title
+    self.year.year_text + " - " + self.subject.subject_text + " - " + self.topic.topic_text
+  end
+
   def blank_stars
    5 - rating.to_i
   end

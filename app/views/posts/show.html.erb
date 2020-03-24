@@ -42,16 +42,18 @@
      </div>
 </p>
 
-<!-- Add new tag -->
-<%= form_tag "/posts/#{@post.id}/tags/new", {remote: true, :method => :get, :class => "form-inline"} do  %>
-  <div id= "search-data" class="form-search search-data" data-skills="<%= @tags.to_json %>">
-    <b>Nova Tag:</b>
-    <%= text_field_tag :tag_text, nil, autocomplete: :on, class: "form-control search-input", placeholder: "Buscars tag..." %>
-  </div>
-
-  <div class="actions">
-    <%= submit_tag 'Adicionar Tag'  %>
-  </div>
+<% if @can_edit %>
+  <!-- Add new tag -->
+  <%= form_tag "/posts/#{@post.id}/tags/new", {remote: true, :method => :get, :class => "form-inline"} do  %>
+    <div id= "search-data-tag" name="search-data-tag" class="form-search search-data autocomplete"
+      style="border-top: 1px solid #eee;border-bottom:1px solid #eee;background:#fafafa;margin:30px 0;padding:20px 10px;text-align:center"
+      data-skills="<%= @tags.to_json %>">
+      <b>Nova Tag:</b>
+      <%= text_field_tag :tag_text, nil, autocomplete: :off, class: "form-control search-input",
+        placeholder: "Buscar tags...", sytle: "width:100%;max-width:600px;outline:0" %>
+      <%= submit_tag 'Adicionar Tag'  %>
+    </div>
+  <% end %>
 <% end %>
 
 <p/>
@@ -70,7 +72,7 @@
 </ul>
 
 <% if @can_edit %>
- <%= button_to 'Inserir Anexos', new_post_file_upload_path(@post) %>
+ <%= button_to 'Inserir Anexos', new_post_file_upload_path(@post), method: :get %>
 <% end %>
 
 <br/><br/>
